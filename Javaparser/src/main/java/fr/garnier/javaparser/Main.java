@@ -1,8 +1,12 @@
 package fr.garnier.javaparser;
 
-import com.github.javaparser.*;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
-public class main {
+import java.util.Optional;
+
+public class Main {
     public static void main(String[] args){
         generateJavaCode();
     }
@@ -23,8 +27,8 @@ public class main {
     }
 
     private static void generationMain() {
-        CompliationUnit compliationUnit
-                = StaticJavaParser.parse("class Main { }");
+        CompilationUnit compliationUnit
+                = StaticJavaParser.parse("public class Main { }");
         Optional<ClassOrInterfaceDeclaration> classA
                 = compliationUnit.getClassByName("Main");
 
