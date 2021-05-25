@@ -4,6 +4,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
+
 import java.util.Optional;
 
 public class Main {
@@ -27,10 +28,10 @@ public class Main {
     }
 
     private static void generationMain() {
-        CompilationUnit compliationUnit
+        CompilationUnit compilationUnit
                 = StaticJavaParser.parse("public class Main { }");
         Optional<ClassOrInterfaceDeclaration> classA
-                = compliationUnit.getClassByName("Main");
+                = compilationUnit.getClassByName("Main");
 
     }
 
