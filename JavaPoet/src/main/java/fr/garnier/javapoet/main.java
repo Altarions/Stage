@@ -17,7 +17,6 @@ public class main {
 
         generationMain();
         generationStatus();
-        
         generationCommand();
     }
 

@@ -1,11 +1,18 @@
 package fr.garnier.javaparser;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ThisExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 
 
-import java.util.Optional;
 
 public class Main {
     public static void main(String[] args){
@@ -13,31 +20,45 @@ public class Main {
     }
 
     private static void generateJavaCode() {
+        CompilationUnit cu = new CompilationUnit();
+        cu.setPackageDeclaration("fr.garnier.javapoet");
 
-        generationMain();
-        generationStatus();
+        ClassOrInterfaceDeclaration main = cu.addClass("Main");
 
-        generationCommand();
-    }
+        main.addField("Object","plugin", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC);
+        main.addField("String","name", Modifier.Keyword.PUBLIC);
 
-    private static void generationCommand() {
-    }
+        main.addConstructor(Modifier.Keyword.PUBLIC)
+                .addParameter("String","name")
+                .setBody(new BlockStmt()
+                        .addStatement(new ExpressionStmt(new AssignExpr(
+                                new FieldAccessExpr(
+                                        new ThisExpr(), "name"),
+                                new NameExpr("name"),
+                                AssignExpr.Operator.ASSIGN))));
 
-    private static void generationStatus() {
 
-    }
+        main.addMethod("getPlugin", Modifier.Keyword.PUBLIC).setBody(
+                new BlockStmt().addStatement(
+                        new ReturnStmt(new NameExpr("plugin"))));
 
-    private static void generationMain() {
-        CompilationUnit compilationUnit
-                = StaticJavaParser.parse("public class Main { }");
-        Optional<ClassOrInterfaceDeclaration> classA
-                = compilationUnit.getClassByName("Main");
+        main.addMethod("getName", Modifier.Keyword.PUBLIC).setBody(
+                new BlockStmt().addStatement(
+                        new ReturnStmt(new NameExpr("name"))));
 
-    }
+        EnumDeclaration statut = cu.addEnum("statut");
 
-    private static void writeFile() {
+        statut.addEnumConstant("NOTREADY");
+        statut.addEnumConstant("READY");
+        statut.addEnumConstant("STOPPED");
 
+        System.out.println(cu.toString());
     }
 
 
 }
+
+
+
+
+
